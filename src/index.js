@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'babel-polyfill';
 import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory'
 import routes from './routes';
 import configureStore  from './Store/Store';
@@ -11,15 +11,35 @@ import configureStore  from './Store/Store';
 // import Constant from './Phi/Constants.js'
 import * as serviceWorker from './serviceWorker';
 import App from './App'
+import Protected from './protected'
+import ProtectedRoute from './ProtectedRoute'
+import Public from './public'
 
 const store = configureStore();
-const browserHistory = createBrowserHistory()
+// const browserHistory = createBrowserHistory()
 // Phi.initialize({apiUrl: Constant.apiHost, apiPort: '', apiProtocol: 'https://'});
+
+console.log("store: ", store)
+/* const ProtectedRoute = ({ component: Component, ...rest}) => {
+    return (
+        <Route {...rest} render={(props) => (
+            true
+            ?   <Component {...props} />
+            :   <Redirect to={{
+                    pathname: '/login',
+                    state: { from: props.location }
+                }}/>
+        )} />
+)} */
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router routes={routes} history={browserHistory}>
-            <Route path="/" component={App}/>
+        <Router>
+            <div>
+                <Route exact path="/" component={App}/>
+                <Route exact path="/login" component={App}/>
+                <ProtectedRoute path="/home" component={Protected} />
+            </div>
         </Router>
     </Provider>,
     document.getElementById('root')
