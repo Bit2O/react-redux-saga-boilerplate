@@ -45,7 +45,7 @@ export default function configureStore(initialState) {
   let sagaTask = sagaMiddleware.run(function* () {
     yield mySaga()
   })
-  sagaMiddleware.run(mySaga)
+  // sagaMiddleware.run(mySaga)
  /* store.subscribe(() => {
     //console.log(store.getState());
   });*/
